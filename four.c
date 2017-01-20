@@ -7,14 +7,6 @@
 #define COLS 7
 #define DIAGS MIN(ROWS,COLS)
 
-void p(int *nums, int len){
-  int i;
-  for (i=0;i<len;i++){
-    printf("%d ",nums[i]);
-  }
-  printf("\n");
-}
-
 int argmax(int *nums, int len){
   int idx=0;
   int max=nums[0];
@@ -138,25 +130,6 @@ int find_pattern(int *pattern, int p_len, int *nums, int n_len){
   return count;
 }
 
-int check_n(int n, int test, int nums[], int len){
-  int total=0;
-  int count=0;
-  int i;
-  for (i=0;i<len;i++){
-    if (nums[i]==test){
-      count++;
-    }
-    else {
-      count=0;
-    }
-    if (count==n){
-      total++;
-      count=0;
-    }
-  }
-  return total;
-}
-
 int check_four(int nums[], int len){
   int count=0;
   int test=nums[0];
@@ -275,37 +248,6 @@ int board_value(int board[ROWS][COLS], int player){
   return t1+4*t2+9*t3;
 }
 
-int get_clumps(int board[ROWS][COLS], int sz, int player){
-  int score=0;
-  int clumps;
-  int i;
-  for (i=0;i<ROWS;i++){
-    int r[COLS]={0};
-    get_row(board,i,r,COLS);
-    clumps=check_n(sz,player,r,COLS);
-    score+=sz*clumps;
-  }
-  for (i=0;i<COLS;i++){
-    int c[ROWS]={0};
-    get_col(board,i,c,ROWS);
-    clumps=check_n(sz,player,c,ROWS);
-    score+=sz*clumps;
-  }
-  for (i=3;i<9;i++){
-    int rd[DIAGS]={0};
-    get_r_diag(board,i,rd,DIAGS);
-    clumps=check_n(sz,player,rd,DIAGS);
-    score+=sz*clumps;
-  }
-  for (i=3;i<9;i++){
-    int ld[DIAGS]={0};
-    get_l_diag(board,i,ld,DIAGS);
-    clumps=check_n(sz,player,ld,DIAGS);
-    score+=sz*clumps;
-  }
-  return score;
-}
-
 int heuristic(int board[ROWS][COLS], int player){
   int who=check_win(board);
 
@@ -319,8 +261,6 @@ int heuristic(int board[ROWS][COLS], int player){
     return 0;
   }
   int score=0;
-  //score+=get_clumps(board,3,player);
-  //score-=get_clumps(board,3,player%2+1);
   score+=board_value(board,player);
   score-=board_value(board,player%2+1);
   return score;
