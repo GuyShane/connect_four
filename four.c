@@ -3,6 +3,7 @@
 #define MAX(a,b) ((a)>(b)?(a):(b))
 #define MIN(a,b) ((a)<(b)?(a):(b))
 
+#define DISCOUNT 5
 #define ROWS 6
 #define COLS 7
 #define DIAGS MIN(ROWS,COLS)
@@ -271,7 +272,7 @@ int minimax(int board[ROWS][COLS], int depth, int alpha, int beta, int player, i
     //print_board(board);
     //printf("Heuristic: %d\n",heuristic(board,player));
     //getchar();
-    return heuristic(board,player);
+    return heuristic(board,player)-(DISCOUNT-depth)*DISCOUNT;
   }
 
   int best=turn==player?-10000:10000;
@@ -291,7 +292,7 @@ int minimax(int board[ROWS][COLS], int depth, int alpha, int beta, int player, i
 }
 
 int ai(int board[ROWS][COLS], int player){
-  int depth=3;
+  int depth=4;
   int scores[COLS];
   int i;
   for (i=0;i<COLS;i++){
@@ -303,6 +304,7 @@ int ai(int board[ROWS][COLS], int player){
     else {
       scores[i]=-20000;
     }
+    //printf("scores[%d]=%d\n",i,scores[i]);
   }
   return argmax(scores,COLS);
 }
